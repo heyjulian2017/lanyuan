@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanyuan.mapper.business.InspectionRecordMapper">
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 <cache type="org.mybatis.caches.ehcache.LoggingEhcache" 
+		/> -->
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		id,
+		organization_code,
+		batch,
+		product_quantity,
+		package_code,
+		inspection_time,
+		inspection_weight,
+		company_name,
+		package_type,
+		package_material,
+		package_cover
+	</sql>
+
+	<select id="findByPage" resultType="com.lanyuan.entity.business.CompanyFormMap">
+		select
+		<include refid="selectId" />
+		from ly_inspection_record
+		where 1 = 1
+		<if test="organization_code != null and organization_code != ''">
+			and organization_code like '%${organization_code}%'
+		</if>
+		<if test="batch != null and batch != ''">
+			and batch like '%${batch}%'
+		</if>
+		<if test="company_name != null and company_name != ''">
+			and company_name like '%${company_name}%'
+		</if>
+	</select>
+	
+</mapper>
